@@ -2,6 +2,8 @@ services:
   mysql:
     image: mysql:${MYSQL_VERSION}
     restart: on-failure
+    volumes:
+      - db_data:/var/lib/mysql
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
       MYSQL_DATABASE: ${MYSQL_DATABASE}
@@ -16,6 +18,7 @@ services:
     restart: on-failure
     volumes:
       - ./public_html:/var/www/html
+      - ./docker/wordpress/wordpress.ini:/usr/local/etc/php/conf.d/wordpress.ini
     environment:
       WORDPRESS_DB_HOST: ${WORDPRESS_DB_HOST}
       WORDPRESS_DB_USER: ${MYSQL_USER}
@@ -34,3 +37,6 @@ services:
     image: mailhog/mailhog:${MAILHOG_VERSION}
     ports:
       - "${MAILHOG_PORT}:8025"
+
+volumes:
+  db_data:
